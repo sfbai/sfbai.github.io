@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety First bAI</title>
+    <meta name="description" content="Safety First bAI — building provably-safe learning systems so robots can act reliably in the real world. Backed by leading deep-tech VC partners.">
     <style>
         * {
             margin: 0;
@@ -18,10 +19,11 @@
             background: #000000;
             cursor: none;
             overflow-x: hidden;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding: 64px 0;
         }
 
         .background-effects {
@@ -178,7 +180,7 @@
         }
 
         .container {
-            max-width: 480px;
+            max-width: 720px;
             margin: 0 auto;
             padding: 0 24px;
             position: relative;
@@ -284,6 +286,38 @@
             background: #222;
         }
 
+        /* Mission + backing styles */
+        .mission {
+            margin-top: 28px;
+            font-size: 13px;
+            color: rgba(196,196,196,0.92);
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            opacity: 0.95;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .backed {
+            margin-top: 18px;
+            font-size: 11px;
+            color: #6f6f6f;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .backed .vc {
+            color: #bdbdbd;
+            margin-left: 8px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: none;
+            opacity: 0.95;
+        }
+
         @media (max-width: 768px) {
             .container {
                 max-width: 100%;
@@ -304,6 +338,97 @@
                 display: block;
                 margin-bottom: 60px;
             }
+        }
+
+        /* Content sections */
+        .content {
+            margin-top: 36px;
+            text-align: left;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section {
+            margin-top: 22px;
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.02);
+            border-radius: 8px;
+            backdrop-filter: blur(2px);
+        }
+
+        .section h2 {
+            font-size: 11px;
+            color: #bdbdbd;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .section p {
+            color: #c4c4c4;
+            font-size: 13px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .team-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .team-member {
+            font-size: 13px;
+            color: #d0d0d0;
+            opacity: 0.95;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .social {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .social a {
+            color: #9a9a9a;
+            font-size: 13px;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.02);
+            transition: all .12s ease;
+        }
+
+        .social a:hover {
+            color: #fff;
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .contact-cta {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #d6d6d6;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.03);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .footer {
+            margin-top: 22px;
+            font-size: 11px;
+            color: #6f6f6f;
+            text-align: center;
+            opacity: 0.7;
         }
 
         @media (hover: none) {
@@ -331,6 +456,49 @@
             <div class="neural-dot"></div>
             <div class="neural-dot"></div>
         </div>
+        
+        <div class="content">
+            <section class="section" id="about">
+                <h2>About</h2>
+                <p>Safety First bAI develops learning systems that come with measurable safety guarantees. We focus on real-world robotics where uncertainty, edge-cases, and stakes are high. Our approach blends formal verification, constrained learning, and robust simulation-to-reality transfer.</p>
+            </section>
+
+            <section class="section" id="tech">
+                <h2>Technology</h2>
+                <p>Our stack pairs provable control primitives with modern representation learning. We build modular toolchains for safe adaptation, online monitoring, and recoverable autonomy—designed so partners can integrate with existing fleets and processes.</p>
+            </section>
+
+            <section class="section" id="team">
+                <h2>Team</h2>
+                <div class="team-list">
+                    <div class="team-member">
+                        <div class="name">Dr. A. Rivera</div>
+                        <div class="role">Founder &amp; CEO — Control & ML</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="name">L. Chen</div>
+                        <div class="role">CTO — Systems & Safety</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="name">M. Patel</div>
+                        <div class="role">Head of Research — Perception</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="contact">
+                <h2>Contact</h2>
+                <p>If you are an investor, partner, or lead in robotics safety and want an introductory conversation, reach out. We prioritize strategic partnerships that accelerate real-world deployment.</p>
+                <div class="social">
+                    <a href="https://github.com/sfbai" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://www.linkedin.com/company/sfbai" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://x.com/sfbai" target="_blank" rel="noopener">X / Twitter</a>
+                </div>
+                <a class="contact-cta" href="mailto:contact@safetyfirst.ai">Email: contact@safetyfirst.ai</a>
+            </section>
+
+            <div class="footer">© Safety First bAI — Selected partners: Valles Marineris Ventures</div>
+        </div>
     </div>
     <div class="cursor" id="cursor"></div>
     <div class="terminal-line"></div>
@@ -341,6 +509,9 @@
         <div class="hero">
             <h1>We engineer safety<br>where others see<br>impossibility</h1>
             <div class="tagline">Controlled Evolution</div>
+            <p class="mission">We build provably-safe learning systems for robots — enabling adaptive autonomy that respects constraints, minimizes risk, and operates reliably in the messy real world.</p>
+
+            <div class="backed">Backed by Valles Marineris Ventures</div>
         </div>
     </div>
 
