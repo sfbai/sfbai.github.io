@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety First bAI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            line-height: 1.9;
+            color: #c4c4c4;
+            background: #000000;
+            cursor: none;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .grain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.04;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #ffffff 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, #ffffff 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: grain 8s linear infinite;
+        }
+
+        .network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(90deg, transparent 98%, #222 99%, #222 100%),
+                linear-gradient(0deg, transparent 98%, #222 99%, #222 100%);
+            background-size: 120px 120px;
+            animation: networkPulse 15s ease-in-out infinite;
+        }
+
+        .glitch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 48%, #ff0000 49%, #ff0000 50%, transparent 51%),
+                        linear-gradient(-45deg, transparent 48%, #00ff00 49%, #00ff00 50%, transparent 51%);
+            background-size: 100px 100px;
+            opacity: 0;
+            animation: glitchFlash 8s infinite;
+            mix-blend-mode: multiply;
+        }
+
+        .data-stream {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 2px,
+                    #111 2px,
+                    #111 3px
+                );
+            background-size: 200px 1px;
+            opacity: 0.02;
+            animation: dataFlow 20s linear infinite;
+        }
+
+        .neural-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .neural-dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #333;
+            border-radius: 50%;
+            animation: neuralPulse 4s ease-in-out infinite;
+        }
+
+        .neural-dot:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+        .neural-dot:nth-child(2) { top: 60%; left: 85%; animation-delay: 1.3s; }
+        .neural-dot:nth-child(3) { top: 80%; left: 25%; animation-delay: 2.1s; }
+        .neural-dot:nth-child(4) { top: 30%; left: 75%; animation-delay: 3.7s; }
+        .neural-dot:nth-child(5) { top: 45%; left: 10%; animation-delay: 1.8s; }
+        .neural-dot:nth-child(6) { top: 15%; left: 60%; animation-delay: 2.9s; }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-3px, -2px); }
+            50% { transform: translate(2px, -3px); }
+            75% { transform: translate(-2px, 2px); }
+        }
+
+        @keyframes networkPulse {
+            0%, 100% { 
+                opacity: 0.1; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.05; 
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes glitchFlash {
+            0%, 94%, 100% { opacity: 0; }
+            95%, 97% { opacity: 0.03; }
+            96% { opacity: 0.08; }
+        }
+
+        @keyframes dataFlow {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(100vw); }
+        }
+
+        @keyframes neuralPulse {
+            0%, 100% { 
+                opacity: 0.1; 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(85, 85, 85, 0.3);
+            }
+            50% { 
+                opacity: 0.3; 
+                transform: scale(1.2);
+                box-shadow: 0 0 0 4px rgba(85, 85, 85, 0);
+            }
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor.active {
+            transform: scale(1.5);
+            border-color: #666;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 13px;
+            font-weight: 300;
+            color: #404040;
+            text-decoration: none;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .logo::before {
+            content: '>';
+            margin-right: 8px;
+            color: #222;
+        }
+
+        .hero {
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -40px;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, #333, transparent);
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 200;
+            margin-bottom: 40px;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.4;
+            position: relative;
+            animation: textGlitch 12s infinite;
+        }
+
+        @keyframes textGlitch {
+            0%, 92%, 100% { 
+                transform: translateX(0);
+                text-shadow: none;
+            }
+            93% { 
+                transform: translateX(-2px);
+                text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
+            }
+            94% { 
+                transform: translateX(2px);
+                text-shadow: -1px 0 #ff0000, 1px 0 #00ffff;
+            }
+            95% { 
+                transform: translateX(0);
+                text-shadow: none;
+            }
+        }
+
+        .tagline {
+            font-size: 11px;
+            color: #333;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .tagline::before {
+            content: '//';
+            margin-right: 12px;
+            color: #222;
+        }
+
+        .terminal-line {
+            position: fixed;
+            top: 0;
+            right: 24px;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, #111 20%, #111 80%, transparent 100%);
+            opacity: 0.3;
+        }
+
+        .terminal-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -4px;
+            width: 8px;
+            height: 1px;
+            background: #222;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 0 20px;
+            }
+            
+            .terminal-line {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .logo {
+                position: static;
+                transform: none;
+                display: block;
+                margin-bottom: 60px;
+            }
+        }
+
+        @media (hover: none) {
+            .cursor {
+                display: none;
+            }
+            
+            body {
+                cursor: default;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effects">
+        <div class="grain"></div>
+        <div class="network"></div>
+        <div class="glitch-overlay"></div>
+        <div class="data-stream"></div>
+        <div class="neural-dots">
+            <div class="neural-dot"></div>
+            <div class="neural-dot"></div>
+            <div class="neural-dot"></div>
+            <div class="neural-dot"></div>
+            <div class="neural-dot"></div>
+            <div class="neural-dot"></div>
+        </div>
+    </div>
+    <div class="cursor" id="cursor"></div>
+    <div class="terminal-line"></div>
+    
+    <div class="container">
+        <a href="#" class="logo">Safety_First_bAI</a>
+        
+        <div class="hero">
+            <h1>We engineer safety<br>where others see<br>impossibility</h1>
+            <div class="tagline">Controlled Evolution</div>
+        </div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+
+        // Custom cursor
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursor.style.left = (mouseX - 10) + 'px';
+            cursor.style.top = (mouseY - 10) + 'px';
+        });
+
+        // Cursor interaction
+        const interactables = document.querySelectorAll('a');
+        
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+            });
+        });
+
+        // Enhanced glitch effect for text
+        let glitchInterval;
+        
+        function randomGlitch() {
+            if (Math.random() < 0.03) { // 3% chance every frame
+                const heroText = document.querySelector('h1');
+                heroText.style.transform = `translateX(${(Math.random() - 0.5) * 4}px)`;
+                heroText.style.textShadow = `${Math.random() * 2}px 0 #ff0000, ${Math.random() * -2}px 0 #00ffff`;
+                
+                setTimeout(() => {
+                    heroText.style.transform = 'translateX(0)';
+                    heroText.style.textShadow = 'none';
+                }, 50 + Math.random() * 100);
+            }
+        }
+
+        setInterval(randomGlitch, 100);
+
+        // Network connection lines (SVG injection)
+        function createNetworkLines() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.opacity = '0.05';
+            svg.style.pointerEvents = 'none';
+            
+            // Create connecting lines between neural dots
+            const connections = [
+                { x1: '15%', y1: '20%', x2: '75%', y2: '30%' },
+                { x1: '75%', y1: '30%', x2: '85%', y2: '60%' },
+                { x1: '25%', y1: '80%', x2: '60%', y2: '15%' },
+                { x1: '10%', y1: '45%', x2: '25%', y2: '80%' }
+            ];
+            
+            connections.forEach((conn, i) => {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', conn.x1);
+                line.setAttribute('y1', conn.y1);
+                line.setAttribute('x2', conn.x2);
+                line.setAttribute('y2', conn.y2);
+                line.setAttribute('stroke', '#333');
+                line.setAttribute('stroke-width', '1');
+                line.style.animation = `networkLine 8s ease-in-out infinite ${i * 2}s`;
+                svg.appendChild(line);
+            });
+            
+            document.querySelector('.neural-dots').appendChild(svg);
+        }
+
+        // Add network line animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes networkLine {
+                0%, 100% { opacity: 0; stroke-dasharray: 0, 1000; }
+                50% { opacity: 0.1; stroke-dasharray: 1000, 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        createNetworkLines();
+    </script>
+</body>
+</html>
