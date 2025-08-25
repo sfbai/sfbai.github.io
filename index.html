@@ -12,17 +12,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
             line-height: 1.9;
             color: #c4c4c4;
             background: #000000;
-            cursor: none;
             overflow-x: hidden;
             min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
+            display: block;
             padding: 64px 0;
         }
 
@@ -162,25 +163,10 @@
             }
         }
 
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 1px solid #333;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
-        }
-
-        .cursor.active {
-            transform: scale(1.5);
-            border-color: #666;
-        }
+    /* custom cursor removed to preserve native cursor and accessibility */
 
         .container {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
             padding: 0 24px;
             position: relative;
@@ -356,6 +342,7 @@
             border: 1px solid rgba(255,255,255,0.02);
             border-radius: 8px;
             backdrop-filter: blur(2px);
+            min-height: 120px; /* ensure sections take visible space */
         }
 
         .section h2 {
@@ -410,6 +397,12 @@
             color: #fff;
             transform: translateY(-3px);
             background: rgba(255,255,255,0.02);
+        }
+
+        .social a:focus,
+        .contact-cta:focus {
+            outline: 2px solid rgba(180,180,255,0.12);
+            outline-offset: 2px;
         }
 
         .contact-cta {
@@ -500,7 +493,6 @@
             <div class="footer">© Safety First bAI — Selected partners: Valles Marineris Ventures</div>
         </div>
     </div>
-    <div class="cursor" id="cursor"></div>
     <div class="terminal-line"></div>
     
     <div class="container">
@@ -516,30 +508,7 @@
     </div>
 
     <script>
-        const cursor = document.getElementById('cursor');
-        let mouseX = 0, mouseY = 0;
-
-        // Custom cursor
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            cursor.style.left = (mouseX - 10) + 'px';
-            cursor.style.top = (mouseY - 10) + 'px';
-        });
-
-        // Cursor interaction
-        const interactables = document.querySelectorAll('a');
-        
-        interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('active');
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('active');
-            });
-        });
+    // Native cursor preserved; interactive link hover handled by CSS
 
         // Enhanced glitch effect for text
         let glitchInterval;
